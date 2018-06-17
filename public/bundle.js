@@ -24917,7 +24917,15 @@
 	    'div',
 	    null,
 	    React.createElement(Nav, null),
-	    props.children
+	    React.createElement(
+	      'div',
+	      { className: 'row' },
+	      React.createElement(
+	        'div',
+	        { className: 'column small-6 large-4 small-centered' },
+	        props.children
+	      )
+	    )
 	  );
 	};
 
@@ -25099,8 +25107,11 @@
 	        'form',
 	        { onSubmit: this.onFormSbmit },
 	        React.createElement('input', { type: 'text', name: 'city', placeholder: 'Enter City Name', ref: 'loc' }),
-	        React.createElement('br', null),
-	        React.createElement('input', { type: 'submit', placeholder: 'Get Weather!' })
+	        React.createElement(
+	          'button',
+	          { className: 'button expanded' },
+	          'Get Weather!'
+	        )
 	      )
 	    );
 	  }
@@ -26740,14 +26751,39 @@
 
 	var React = __webpack_require__(8);
 
+	var _require = __webpack_require__(166),
+	    Link = _require.Link;
+
 	var Examples = function Examples(props) {
 	  return React.createElement(
 	    'div',
 	    null,
 	    React.createElement(
 	      'h1',
-	      null,
+	      { className: 'text-center' },
 	      'Examples jsx'
+	    ),
+	    React.createElement(
+	      'ol',
+	      null,
+	      React.createElement(
+	        'li',
+	        null,
+	        React.createElement(
+	          Link,
+	          { to: '?/location=Delhi' },
+	          'Delhi'
+	        )
+	      ),
+	      React.createElement(
+	        'li',
+	        null,
+	        React.createElement(
+	          Link,
+	          { to: '?/location=Qubec' },
+	          'Qubec'
+	        )
+	      )
 	    )
 	  );
 	};
