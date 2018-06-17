@@ -7,6 +7,10 @@ var Weather = require('Weather');
 var about = require('About');
 var example = require('Example');
 
+//load foundation
+require('style!css!foundation-sites/dist/foundation.min.css');
+$(document).foundation();
+
 ReactDOM.render(
 <Router history={hashHistory}>
     <Route path="/" component={main}>
