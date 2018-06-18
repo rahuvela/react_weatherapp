@@ -1,7 +1,23 @@
 var React = require('react');
 var {Link, IndexLink} = require('react-router');
 
-var Nav = (props) => {
+var Nav = React.createClass({
+
+  navSearch : function(e){
+    e.preventDefault();
+    var navVal = this.refs.navvalue.value;
+    //alert(navVal);
+    var encodedLoc = encodeURIComponent(navVal);
+
+    if(navVal.length > 0){
+      this.refs.navvalue.value = '';
+      window.location.hash = '#/?location=' + encodedLoc;
+    }
+
+
+  },
+
+  render: function(){
   return(
     <div className="top-bar">
         <div className="top-bar-left">
@@ -19,11 +35,18 @@ var Nav = (props) => {
         </ul>
       </div>
       <div className="top-bar-right">
-        <ul>Hello!</ul>
+        <form onSubmit={this.navSearch}>
+          <ul className="menu">
+            <li><input type="search" placeholder="Search" ref="navvalue"></input></li>
+            <li><button type="submit" className="button expanded">Search</button></li>
+          </ul>
+
+        </form>
       </div>
     </div>
 
   );
-};
+}
+});
 
 module.exports = Nav;

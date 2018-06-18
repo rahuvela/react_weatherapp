@@ -7,10 +7,10 @@ var Examples = (props) => {
       <h1 className='text-center'>Examples jsx</h1>
       <ol>
         <li>
-          <Link to='?/location=Delhi'>Delhi</Link>
+          <Link to='?location=Delhi'>Delhi</Link>
         </li>
         <li>
-          <Link to='?/location=Qubec'>Qubec</Link>
+          <Link to='?location=Austin'>Austin</Link>
         </li>
       </ol>
     </div>
