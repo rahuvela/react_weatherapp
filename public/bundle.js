@@ -105,12 +105,15 @@
 
 	var main = __webpack_require__(223);
 	var Weather = __webpack_require__(225);
-	var about = __webpack_require__(255);
-	var example = __webpack_require__(256);
+	var about = __webpack_require__(256);
+	var example = __webpack_require__(257);
 
 	//load foundation
-	__webpack_require__(257);
+	__webpack_require__(258);
 	$(document).foundation();
+
+	//load css
+	__webpack_require__(262);
 
 	ReactDOM.render(React.createElement(
 	  Router,
@@ -25011,6 +25014,7 @@
 	var WeatherForm = __webpack_require__(226);
 	var WeatherMsg = __webpack_require__(227);
 	var Owm = __webpack_require__(228);
+	var Emodal = __webpack_require__(255);
 
 	var Weather = React.createClass({
 	  displayName: 'Weather',
@@ -25025,16 +25029,18 @@
 	  handleSearch: function handleSearch(value) {
 
 	    var that = this;
-	    this.setState({ isLoading: true });
+	    this.setState({ isLoading: true,
+	      errorMessage: undefined });
 	    Owm.getTemp(value).then(function (temp) {
 	      that.setState({
 	        location: value,
 	        temp: temp,
 	        isLoading: false
 	      });
-	    }, function (errorMessage) {
-	      that.setState({ isLoading: false });
-	      alert("Invalid City");
+	    }, function (e) {
+	      that.setState({ isLoading: false,
+	        errorMessage: e.message });
+	      //alert("Invalid City");
 	    });
 
 	    // this.setState({
@@ -25047,7 +25053,8 @@
 	    var _state = this.state,
 	        isLoading = _state.isLoading,
 	        location = _state.location,
-	        temp = _state.temp;
+	        temp = _state.temp,
+	        errorMessage = _state.errorMessage;
 
 
 	    function renderMessage() {
@@ -25062,16 +25069,23 @@
 	      }
 	    }
 
+	    function renderError() {
+	      if (typeof errorMessage === 'string') {
+	        return React.createElement(Emodal, { message: errorMessage });
+	      }
+	    }
+
 	    return React.createElement(
 	      'div',
 	      null,
 	      React.createElement(
 	        'h1',
-	        null,
-	        'Weather jsx'
+	        { className: 'page-title' },
+	        'Weather App'
 	      ),
 	      React.createElement(WeatherForm, { onSearch: this.handleSearch }),
-	      renderMessage()
+	      renderMessage(),
+	      renderError()
 	    );
 	  }
 	});
@@ -25169,7 +25183,7 @@
 	        return res.data.main.temp;
 	      }
 	    }, function (res) {
-	      throw new Error(res.data.message);
+	      throw new Error('cant fetch city');
 	    });
 	  }
 	};
@@ -26725,6 +26739,65 @@
 /* 255 */
 /***/ function(module, exports, __webpack_require__) {
 
+	/* WEBPACK VAR INJECTION */(function($) {'use strict';
+
+	var React = __webpack_require__(8);
+
+	var ErrorModal = React.createClass({
+	  displayName: 'ErrorModal',
+
+
+	  getDefaultProps: function getDefaultProps() {
+	    return {
+	      title: 'error'
+	    };
+	  },
+
+	  propTypes: {
+	    title: React.PropTypes.string,
+	    message: React.PropTypes.string
+	  },
+
+	  componentDidMount: function componentDidMount() {
+	    var modal = new Foundation.Reveal($('#emodal'));
+	    modal.open();
+	  },
+
+	  render: function render() {
+	    var _props = this.props,
+	        title = _props.title,
+	        message = _props.message;
+
+	    return React.createElement(
+	      'div',
+	      { id: 'emodal', className: 'reveal tiny text-center', 'data-reveal': '' },
+	      React.createElement(
+	        'p',
+	        null,
+	        title
+	      ),
+	      React.createElement(
+	        'p',
+	        null,
+	        message
+	      ),
+	      React.createElement(
+	        'button',
+	        { className: 'button hollow', 'data-close': '' },
+	        'Close!'
+	      )
+	    );
+	  }
+
+	});
+
+	module.exports = ErrorModal;
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7)))
+
+/***/ },
+/* 256 */
+/***/ function(module, exports, __webpack_require__) {
+
 	'use strict';
 
 	var React = __webpack_require__(8);
@@ -26744,7 +26817,7 @@
 	module.exports = About;
 
 /***/ },
-/* 256 */
+/* 257 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26791,16 +26864,16 @@
 	module.exports = Examples;
 
 /***/ },
-/* 257 */
+/* 258 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(258);
+	var content = __webpack_require__(259);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(260)(content, {});
+	var update = __webpack_require__(261)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -26817,10 +26890,10 @@
 	}
 
 /***/ },
-/* 258 */
+/* 259 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(259)();
+	exports = module.exports = __webpack_require__(260)();
 	// imports
 
 
@@ -26831,7 +26904,7 @@
 
 
 /***/ },
-/* 259 */
+/* 260 */
 /***/ function(module, exports) {
 
 	/*
@@ -26887,7 +26960,7 @@
 
 
 /***/ },
-/* 260 */
+/* 261 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -27138,6 +27211,46 @@
 		if(oldSrc)
 			URL.revokeObjectURL(oldSrc);
 	}
+
+
+/***/ },
+/* 262 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+
+	// load the styles
+	var content = __webpack_require__(263);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(261)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!../../node_modules/css-loader/index.js!./styles.css", function() {
+				var newContent = require("!!../../node_modules/css-loader/index.js!./styles.css");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 263 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(260)();
+	// imports
+
+
+	// module
+	exports.push([module.id, ".page-title {\r\n  color : #99FFCD;\r\n}\r\n", ""]);
+
+	// exports
 
 
 /***/ }
